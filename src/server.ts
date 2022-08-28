@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles, isvalideUrl} from './util/util';
 
@@ -31,7 +31,7 @@ import {filterImageFromURL, deleteLocalFiles, isvalideUrl} from './util/util';
 
   //! END @TODO1
 
-  app.get("/filteredimage", async (req, res) => {
+  app.get("/filteredimage", async (req: Request, res: Response) => {
     // validate the image_url query
     const image_url = req.query["image_url"];
     if(isvalideUrl(image_url)){
@@ -43,14 +43,14 @@ import {filterImageFromURL, deleteLocalFiles, isvalideUrl} from './util/util';
         deleteLocalFiles([filteredpath]);
       });
     }else{
-      res.send("image url should be valid");
+      res.status(422).send("image url should be valid");
     }
     
   });
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async ( req: Request, res: Response) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
 
