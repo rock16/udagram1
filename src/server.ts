@@ -36,12 +36,16 @@ import {filterImageFromURL, deleteLocalFiles, isvalideUrl} from './util/util';
     const image_url = req.query["image_url"];
     if(isvalideUrl(image_url)){
       // call filterImageFromURL to filter the image
-      const filteredpath = await filterImageFromURL(image_url);
-      // send the resulting file in the response
-      res.sendFile(filteredpath, (err) => {
-        // deletes any files on the server on finish
-        deleteLocalFiles([filteredpath]);
-      });
+      filterImageFromURL(image_url).then(filteredpath => {
+        // send the resulting file in the response
+        res.status(200).sendFile(filteredpath, function(err){
+          if(err) console.log(err)
+          // deletes any files on the server on finish
+          else deleteLocalFiles([filteredpath])
+        })
+        })
+      .catch( _error => res.status(422).send("error"))
+    
     }else{
       res.status(422).send("image url should be valid");
     }
@@ -50,8 +54,8 @@ import {filterImageFromURL, deleteLocalFiles, isvalideUrl} from './util/util';
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req: Request, res: Response) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+  app.get( "/", async ( _req: Request, res: Response) => {
+    res.status(200).send("try GET /filteredimage?image_url={{}}")
   } );
 
   
