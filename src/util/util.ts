@@ -41,5 +41,5 @@ export async function deleteLocalFiles(files: Array<string>) {
 //validate a string as a url path
 export function isvalideUrl(img_url: string): boolean{
   if ( typeof img_url !== 'string' ) return false;
-  return !!img_url.match(/^http.*\.(jpeg|jpg|gif|png|tiff|bmp)$/)
+  return !!img_url.match(/^https?:\/\/.+\/.+$/)
 }
